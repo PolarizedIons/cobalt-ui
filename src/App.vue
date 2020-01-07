@@ -18,8 +18,14 @@ body {
   color: #efefef;
   min-height: 100vh;
 }
-
+hr {
+  color: #eee;
+}
 #app {
   min-height: 100vh;
+}
+
+#app a {
+  text-decoration: none;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="dashboard">
     <h1>Commands</h1>
     <div class="commands">
-      <div class="command" v-for="command of commands" :key="command.id">
+      <div class="command" v-for="command of commands" :key="command._id">
         <h3 class="name">{{ command.name }}</h3>
         <div class="buttons">
           <a @click="onModifyCmdClick(command)" class="btn">Modify</a>
@@ -23,6 +23,11 @@
         <div class="group">
           <span class="label">Name</span>
           <input class="input" v-model="selectedCommand.name" placeholder="The name of the command" />
+        </div>
+
+        <div class="group">
+          <span class="label">Chat Command</span>
+          <input class="input" v-model="selectedCommand.cmd" placeholder="The command in the chat" />
         </div>
 
         <div class="group">
@@ -92,15 +97,17 @@ import ReplyType from "../types/ReplyType";
 export default class Dashboard extends Vue {
   commands: ICommand[] = [
     {
-      id: "123",
+      _id: "123",
       name: "AAA",
+      cmd: "a",
       commandType: CommandType.RANDOM_CHOICE,
       content: "AAA\nAAAAA\nAAAAAAAAAAA\na",
       replyType: ReplyType.NORMAL
     },
     {
-      id: "456",
+      _id: "456",
       name: "Twitch Prime",
+      cmd: "prime",
       commandType: CommandType.NORMAL,
       content: "Did you know about Twitch Prime? ...",
       replyType: ReplyType.NORMAL
@@ -140,11 +147,11 @@ export default class Dashboard extends Vue {
   }
 
   doSaveCmd(cmd: ICommand) {
-    console.log("saving cmd", cmd.id);
+    console.log("saving cmd", cmd._id);
   }
 
   doDeleteCmd(cmd: ICommand) {
-    console.log("deleting cmd", cmd.id);
+    console.log("deleting cmd", cmd._id);
   }
 }
 </script>

@@ -17,7 +17,7 @@
       @close="showModifyPopup = false"
       size="small"
     >
-      <h3>Editing {{ selectedCommand.name}}</h3>
+      <h3>Editing {{ selectedCommand.name }}</h3>
       <hr />
       <div class="form">
         <div class="group">
@@ -34,7 +34,7 @@
           <span class="label">Command Type</span>
           <select class="input" v-model="selectedCommand.commandType">
             <template v-for="(val, name) in COMMAND_TYPE">
-              <option v-if="isNaN(name)" :key="val" :value="val">{{name}}</option>
+              <option v-if="isNaN(name)" :key="val" :value="val">{{ name }}</option>
             </template>
           </select>
         </div>
@@ -52,7 +52,7 @@
           <span class="label">Reply Type</span>
           <select class="input" v-model="selectedCommand.replyType">
             <template v-for="(val, name) in REPLY_TYPE">
-              <option v-if="isNaN(name)" :key="val" :value="val">{{name}}</option>
+              <option v-if="isNaN(name)" :key="val" :value="val">{{ name }}</option>
             </template>
           </select>
         </div>
@@ -71,7 +71,7 @@
       size="small"
       :backgroundCloses="false"
     >
-      <h3>Are you sure you want to delete {{ selectedCommand.name}}?</h3>
+      <h3>Are you sure you want to delete {{ selectedCommand.name }}?</h3>
       <hr />
       <div class="buttons">
         <a @click="onDeleteChoiceClick(true)" class="btn">YES</a>
@@ -85,6 +85,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Popup from "../components/popup.vue";
 
+import CommandService from "../services/CommandService";
 import ICommand from "../types/ICommand";
 import CommandType from "../types/CommandType";
 import ReplyType from "../types/ReplyType";
@@ -95,30 +96,15 @@ import ReplyType from "../types/ReplyType";
   }
 })
 export default class Dashboard extends Vue {
-  commands: ICommand[] = [
-    {
-      _id: "123",
-      name: "AAA",
-      cmd: "a",
-      commandType: CommandType.RANDOM_CHOICE,
-      content: "AAA\nAAAAA\nAAAAAAAAAAA\na",
-      replyType: ReplyType.NORMAL
-    },
-    {
-      _id: "456",
-      name: "Twitch Prime",
-      cmd: "prime",
-      commandType: CommandType.NORMAL,
-      content: "Did you know about Twitch Prime? ...",
-      replyType: ReplyType.NORMAL
-    }
-  ];
+  commands: ICommand[] = [];
   COMMAND_TYPE = CommandType;
   REPLY_TYPE = ReplyType;
 
   selectedCommand: ICommand | object = {};
   showDeletePopup = false;
   showModifyPopup = false;
+
+  // Event Handlers
 
   onModifyCmdClick(cmd: ICommand) {
     this.selectedCommand = Object.assign({}, cmd);
@@ -146,12 +132,31 @@ export default class Dashboard extends Vue {
     this.showModifyPopup = false;
   }
 
+  // Services interaction
+
+  fetchCmds() {
+    CommandService.listCommands().then(resp => {
+      console.log(resp);
+      if (resp.success) {
+        this.commands = resp.data as ICommand[];
+      } else {
+        console.log("Error fetching list of commands", resp.message);
+      }
+    });
+  }
+
   doSaveCmd(cmd: ICommand) {
     console.log("saving cmd", cmd._id);
   }
 
   doDeleteCmd(cmd: ICommand) {
     console.log("deleting cmd", cmd._id);
+  }
+
+  // Lifecycle hooks
+
+  mounted() {
+    this.fetchCmds();
   }
 }
 </script>

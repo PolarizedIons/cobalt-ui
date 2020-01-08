@@ -11,12 +11,7 @@
       </div>
     </div>
 
-    <popup
-      id="modifyCmdPopup"
-      :open="showModifyPopup"
-      @close="showModifyPopup = false"
-      size="small"
-    >
+    <popup id="modifyCmdPopup" :open="showModifyPopup" size="small">
       <h3>Editing {{ selectedCommand.name }}</h3>
       <hr />
       <div class="form">
@@ -64,13 +59,7 @@
       </div>
     </popup>
 
-    <popup
-      id="deleteCmdPopup"
-      :open="showDeletePopup"
-      @close="showDeletePopup = false"
-      size="small"
-      :backgroundCloses="false"
-    >
+    <popup id="deleteCmdPopup" :open="showDeletePopup" size="small" :backgroundCloses="false">
       <h3>Are you sure you want to delete {{ selectedCommand.name }}?</h3>
       <hr />
       <div class="buttons">
@@ -96,10 +85,10 @@ import ReplyType from "../types/ReplyType";
   }
 })
 export default class Dashboard extends Vue {
-  commands: ICommand[] = [];
   COMMAND_TYPE = CommandType;
   REPLY_TYPE = ReplyType;
 
+  commands: ICommand[] = [];
   selectedCommand: ICommand | object = {};
   showDeletePopup = false;
   showModifyPopup = false;
@@ -136,9 +125,8 @@ export default class Dashboard extends Vue {
 
   fetchCmds() {
     CommandService.listCommands().then(resp => {
-      console.log(resp);
       if (resp.success) {
-        this.commands = resp.data as ICommand[];
+        this.commands = resp.data;
       } else {
         console.log("Error fetching list of commands", resp.message);
       }
@@ -150,7 +138,14 @@ export default class Dashboard extends Vue {
   }
 
   doDeleteCmd(cmd: ICommand) {
-    console.log("deleting cmd", cmd._id);
+    CommandService.deleteCommand(cmd._id).then(resp => {
+      if (resp.success) {
+        const index = this.commands.findIndex(
+          command => command._id === cmd._id
+        );
+        this.commands.splice(index, 1);
+      }
+    });
   }
 
   // Lifecycle hooks

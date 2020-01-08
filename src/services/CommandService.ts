@@ -6,4 +6,8 @@ export default class CommandService extends ServiceBase {
     static listCommands(): Promise<ApiResponse<ICommand[]>> {
         return this.client.get("/v1/commands").then(resp => resp.data);
     }
+
+    static deleteCommand(id: string): Promise<ApiResponse<boolean>> {
+        return this.client.delete(`/v1/commands/${id}`).then(resp => resp.data);
+    }
 }

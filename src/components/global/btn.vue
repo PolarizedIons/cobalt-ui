@@ -5,9 +5,9 @@
     @click="$emit('click', $event)"
   >
     <div v-if="busy" class="loader"></div>
-    <div class="content" :style="{ opacity: busy ? 0 : 1 }">
+    <span class="content" :style="{ opacity: busy ? 0 : 1 }">
       <slot></slot>
-    </div>
+    </span>
   </a>
 </template>
 

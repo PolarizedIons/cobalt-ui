@@ -7,6 +7,10 @@ export default class CommandService extends ServiceBase {
         return this.client.get("/commands").then(resp => resp.data);
     }
 
+    static createCommand(cmd: ICommand): Promise<ApiResponse<ICommand>> {
+        return this.client.post("/commands", cmd).then(resp => resp.data);
+    }
+
     static saveCommand(cmd: ICommand): Promise<ApiResponse<ICommand>> {
         return this.client
             .put(`/commands/${cmd._id}`, cmd)

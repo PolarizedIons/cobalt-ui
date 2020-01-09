@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard">
+    <btn class="create-btn" variant="primary" @click="onCreateCmdClick">Create Command</btn>
     <h1>Commands</h1>
     <div class="commands">
       <div class="command" v-for="command of commands" :key="command._id">
@@ -11,7 +12,60 @@
       </div>
     </div>
 
-    <popup id="modifyCmdPopup" :open="showModifyPopup" @close="showModifyPopup = false">
+    <popup id="createCmdPopup" :open="showCreatePopup" @close="onCreateChoiceClick(false)">
+      <h3>Creating New Command</h3>
+      <hr />
+      <div class="form" @keyup.enter="onCreateChoiceClick(true)">
+        <div class="group">
+          <span class="label">Name</span>
+          <input class="input" v-model="selectedCommand.name" placeholder="The name of the command" />
+        </div>
+
+        <div class="group">
+          <span class="label">Chat Command</span>
+          <input class="input" v-model="selectedCommand.cmd" placeholder="The command in the chat" />
+        </div>
+
+        <div class="group">
+          <span class="label">Command Type</span>
+          <select class="input" v-model="selectedCommand.commandType">
+            <template v-for="(val, name) in COMMAND_TYPE">
+              <option v-if="isNaN(name)" :key="val" :value="val">{{ name }}</option>
+            </template>
+          </select>
+        </div>
+
+        <div class="group">
+          <span class="label">Content</span>
+          <textarea
+            class="input"
+            v-model="selectedCommand.content"
+            placeholder="The content of the command"
+          ></textarea>
+        </div>
+
+        <div class="group">
+          <span class="label">Reply Type</span>
+          <select class="input" v-model="selectedCommand.replyType">
+            <template v-for="(val, name) in REPLY_TYPE">
+              <option v-if="isNaN(name)" :key="val" :value="val">{{ name }}</option>
+            </template>
+          </select>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <btn
+          @click="onCreateChoiceClick(true)"
+          class="btn"
+          variant="primary"
+          :busy="busyCreating"
+        >SAVE</btn>
+        <btn @click="onCreateChoiceClick(false)" class="btn">CANCEL</btn>
+      </div>
+    </popup>
+
+    <popup id="modifyCmdPopup" :open="showModifyPopup" @close="onModifyChoiceClick(false)">
       <h3>Editing "{{ selectedCommand.name }}"</h3>
       <hr />
       <div class="form" @keyup.enter="onModifyChoiceClick(true)">
@@ -100,12 +154,25 @@ export default class Dashboard extends Vue {
 
   commands: ICommand[] = [];
   selectedCommand: ICommand | object = {};
+  showCreatePopup = false;
+  busyCreating = false;
   showDeletePopup = false;
   busyDeleting = false;
   showModifyPopup = false;
   busyModifing = false;
 
   // Event Handlers
+
+  onCreateCmdClick() {
+    this.selectedCommand = {
+      name: "",
+      cmd: "",
+      commandType: 0,
+      content: "",
+      replyType: 0
+    };
+    this.showCreatePopup = true;
+  }
 
   onModifyCmdClick(cmd: ICommand) {
     this.selectedCommand = Object.assign({}, cmd);
@@ -117,15 +184,15 @@ export default class Dashboard extends Vue {
     this.showDeletePopup = true;
   }
 
-  onDeleteChoiceClick(choseDelete: boolean) {
-    if (choseDelete) {
-      this.busyDeleting = true;
-      this.doDeleteCmd(this.selectedCommand as ICommand).finally(() => {
-        this.busyDeleting = false;
-        this.showDeletePopup = false;
+  onCreateChoiceClick(choseSave: boolean) {
+    if (choseSave) {
+      this.busyCreating = true;
+      this.doCreateCmd(this.selectedCommand as ICommand).finally(() => {
+        this.busyCreating = false;
+        this.showCreatePopup = false;
       });
     } else {
-      this.showDeletePopup = false;
+      this.showCreatePopup = false;
     }
   }
 
@@ -141,6 +208,18 @@ export default class Dashboard extends Vue {
     }
   }
 
+  onDeleteChoiceClick(choseDelete: boolean) {
+    if (choseDelete) {
+      this.busyDeleting = true;
+      this.doDeleteCmd(this.selectedCommand as ICommand).finally(() => {
+        this.busyDeleting = false;
+        this.showDeletePopup = false;
+      });
+    } else {
+      this.showDeletePopup = false;
+    }
+  }
+
   // Services interaction
 
   fetchCmds() {
@@ -149,6 +228,16 @@ export default class Dashboard extends Vue {
         this.commands = resp.data;
       } else {
         console.log("Error fetching list of commands", resp.message);
+      }
+    });
+  }
+
+  doCreateCmd(cmd: ICommand) {
+    return CommandService.createCommand(cmd).then(resp => {
+      if (resp.success) {
+        this.commands.push(resp.data);
+      } else {
+        console.log("Error deleting", resp.message);
       }
     });
   }
@@ -193,8 +282,12 @@ export default class Dashboard extends Vue {
 }
 
 h1 {
-  margin: 0;
+  margin-top: 0;
   font-size: 3.6rem;
+}
+
+.create-btn {
+  float: right;
 }
 
 .commands {
@@ -217,8 +310,9 @@ h1 {
 }
 
 .command .buttons,
-#deleteCmdPopup .buttons,
-#modifyCmdPopup .buttons {
+#createCmdPopup .buttons,
+#modifyCmdPopup .buttons,
+#deleteCmdPopup .buttons {
   display: flex;
   justify-content: center;
   margin-top: 1.2rem;

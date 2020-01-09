@@ -1,6 +1,7 @@
 <template>
-  <div class="popup-wrapper" v-if="open" @click="backgroundClose">
-    <div :class="`popup width-${size}`" @click.stop>
+  <div class="popup-wrapper" v-if="open">
+    <div class="dimmer" @click="onBackgroundClick"></div>
+    <div :class="`popup ${size}`">
       <slot></slot>
     </div>
   </div>
@@ -20,7 +21,8 @@ export default class Popup extends Vue {
   @Prop({ default: "normal" })
   size!: string;
 
-  backgroundClose() {
+  onBackgroundClick() {
+    console.log("backgound click", this.backgroundCloses);
     if (this.backgroundCloses) {
       this.$emit("close");
     }
@@ -35,31 +37,40 @@ export default class Popup extends Vue {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  z-index: 900;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.dimmer {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 900;
+}
+
 .popup {
   position: relative;
   z-index: 999;
 
-  background: #efefef;
-  color: #121212;
+  background: #222;
+  color: #efefef;
   padding: 1.2rem 2.4rem;
 }
 
-.popup.width-small {
-  width: 40%;
+.popup.small {
+  width: 35%;
 }
-.popup.width-normal {
-  width: 60%;
+.popup.normal {
+  width: 50%;
 }
-.popup.width-large {
-  width: 80%;
+.popup.large {
+  width: 70%;
 }
 </style>

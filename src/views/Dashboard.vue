@@ -41,6 +41,7 @@
             class="input"
             v-model="selectedCommand.content"
             placeholder="The content of the command"
+            @keyup.enter.stop
           ></textarea>
         </div>
 
@@ -94,6 +95,7 @@
             class="input"
             v-model="selectedCommand.content"
             placeholder="The content of the command"
+            @keyup.enter.stop
           ></textarea>
         </div>
 
@@ -337,6 +339,7 @@ h1 {
   text-transform: uppercase;
   font-size: 0.6rem;
   color: #efefef;
+  margin-bottom: 2px;
 }
 
 .popup .group .input {

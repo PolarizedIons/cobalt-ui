@@ -5,5 +5,5 @@ export type ApiResponse<T> =
       }
     | {
           success: false;
-          message: string;
+          error: string;
       };

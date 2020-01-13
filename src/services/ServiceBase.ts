@@ -9,8 +9,8 @@ export default class ServiceBase {
         baseURL: ServiceBase.baseURL,
         responseType: "json",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        validateStatus: () => true,
+        validateStatus: () => true
     });
 }

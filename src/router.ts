@@ -11,10 +11,12 @@ const routes = [
         component: Home
     },
     {
-        path: "/login",
-        name: "login",
+        path: "/login/callback",
+        name: "loginCallback",
         component: () =>
-            import(/* webpackChunkName: "login" */ "./views/Login.vue")
+            import(
+                /* webpackChunkName: "loginCallback" */ "./views/LoginCallback.vue"
+            )
     },
     {
         path: "/login/twitch",
@@ -25,10 +27,16 @@ const routes = [
             )
     },
     {
-        path: "/noaccess",
-        name: "noaccess",
+        path: "/logout",
+        name: "logout",
         component: () =>
-            import(/* webpackChunkName: "noaccess" */ "./views/NoAccess.vue")
+            import(/* webpackChunkName: "logout" */ "./views/Logout.vue")
+    },
+    {
+        path: "/no-access",
+        name: "noAccess",
+        component: () =>
+            import(/* webpackChunkName: "noAccess" */ "./views/NoAccess.vue")
     },
     {
         path: "/dashboard",

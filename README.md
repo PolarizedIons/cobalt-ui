@@ -1,24 +1,14 @@
-# cobalt-ui
+# Cobalt-Bot
 
-## Project setup
-```
-yarn install
-```
+## UI portion of Project Cobalt
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+| Project      | Link                                         |
+| ------------ | -------------------------------------------- |
+| Bot          | https://github.com/PolarizedIons/cobalt-bot  |
+| Core         | https://github.com/PolarizedIons/cobalt-core |
+| MicroService | https://github.com/PolarizedIons/cobalt-ms   |
+| UI           | https://github.com/PolarizedIons/cobalt-ui   |
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Usage
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This is the frontend (UI) project. Run via `yarn serve`, build the static files with `yarn build`.

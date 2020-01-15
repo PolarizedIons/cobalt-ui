@@ -1,4 +1,4 @@
-# Cobalt-Bot
+# Cobalt-UI
 
 ## UI portion of Project Cobalt
 

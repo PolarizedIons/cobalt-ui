@@ -31,9 +31,7 @@ const app = new Vue({
 }).$mount("#app");
 
 setInterval(() => {
-  console.log("checking if still valid???");
   if (!app.$token.isValid()) {
-    console.log("kicking out");
     app.loggedIn = false;
     app.$router.push({ name: "home" });
   }

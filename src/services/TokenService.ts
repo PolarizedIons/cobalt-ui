@@ -36,14 +36,6 @@ export default class TokenService {
       return false;
     }
 
-    console.log(
-      "exp",
-      decoded.exp,
-      "now",
-      now,
-      decoded.exp - now,
-      decoded.exp < now
-    );
     if (decoded.exp < now) {
       return false;
     }
@@ -56,9 +48,7 @@ export default class TokenService {
   }
 
   public refresh() {
-    // console.log("refreshing token");
     ServiceBase.client.post("/auth/refresh").then(resp => {
-      console.log("refreshed token!");
       const newToken = resp.data.data;
       const newTokenDecoded = jwt.decode(newToken) as {
         [key: string]: any;

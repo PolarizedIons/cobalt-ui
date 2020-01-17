@@ -271,7 +271,7 @@ export default class Dashboard extends Vue {
       if (resp.success) {
         this.commands = resp.data;
       } else {
-        console.log("Error fetching list of commands", resp.error);
+        // console.log("Error fetching list of commands", resp.error);
       }
     });
   }
@@ -281,7 +281,7 @@ export default class Dashboard extends Vue {
       if (resp.success) {
         this.commands.push(resp.data);
       } else {
-        console.log("Error deleting", resp.error);
+        // console.log("Error deleting", resp.error);
       }
     });
   }
@@ -294,7 +294,7 @@ export default class Dashboard extends Vue {
         );
         this.$set(this.commands, index, resp.data);
       } else {
-        console.log("Error saving", resp.error);
+        // console.log("Error saving", resp.error);
       }
     });
   }
@@ -307,7 +307,7 @@ export default class Dashboard extends Vue {
         );
         this.commands.splice(index, 1);
       } else {
-        console.log("Error deleting", resp.error);
+        // console.log("Error deleting", resp.error);
       }
     });
   }

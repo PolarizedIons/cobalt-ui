@@ -22,7 +22,6 @@ export default class Popup extends Vue {
   size!: string;
 
   onBackgroundClick() {
-    console.log("backgound click", this.backgroundCloses);
     if (this.backgroundCloses) {
       this.$emit("close");
     }

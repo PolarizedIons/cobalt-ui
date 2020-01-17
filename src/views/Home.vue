@@ -6,8 +6,11 @@
       v-if="$root.loggedIn"
       :to="{ name: 'dashboard' }"
       class="home-button"
-    >Go to Dashboard</router-link>
-    <router-link v-else :to="{ name: 'loginTwitch' }" class="home-button">Login with Twitch</router-link>
+      >Go to Dashboard</router-link
+    >
+    <router-link v-else :to="{ name: 'loginTwitch' }" class="home-button"
+      >Login with Twitch</router-link
+    >
   </div>
 </template>
 

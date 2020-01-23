@@ -11,7 +11,7 @@ export default class LoginTwitch extends Vue {
     const url =
       window.location.hostname === "localhost"
         ? "//localhost:3000/auth/login"
-        : "https://twitch.com/404"; // TODO
+        : "https://api.cobalt.polarizedions.net";
     window.location = url;
   }
 }

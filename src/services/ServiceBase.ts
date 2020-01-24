@@ -3,7 +3,9 @@ import { ApiResponse } from "@/types/ApiResponse";
 
 export default class ServiceBase {
   public static baseURL =
-    window.location.hostname === "localhost" ? "http://localhost:3000" : "";
+    window.location.hostname === "localhost" || !process.env.VUE_APP_API_DOMAIN
+      ? "localhost"
+      : process.env.VUE_APP_API_DOMAIN;
 
   public static client = axios.create({
     baseURL: ServiceBase.baseURL,

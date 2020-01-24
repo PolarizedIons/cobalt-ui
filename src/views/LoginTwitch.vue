@@ -8,11 +8,12 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class LoginTwitch extends Vue {
   mounted() {
-    const url =
-      window.location.hostname === "localhost"
-        ? "//localhost:3000/auth/login"
-        : "https://api.cobalt.polarizedions.net"; // TODO: MAKE THIS A ENV
-    window.location = url;
+    const domain =
+      window.location.hostname === "localhost" ||
+      !process.env.VUE_APP_API_DOMAIN
+        ? "localhost"
+        : process.env.VUE_APP_API_DOMAIN;
+    window.location = `//${domain}/auth/login`;
   }
 }
 </script>
